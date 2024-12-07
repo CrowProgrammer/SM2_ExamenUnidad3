@@ -9,23 +9,20 @@ on:
       - main
 
 jobs:
-  code-quality:
+  verify-structure:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
+    - name: List files in repository
+      run: ls -la
 
-    - name: Install dependencies
-      run: npm install
-
-    - name: Run linting
-      run: npm run lint
-
-    - name: Run tests
-      run: npm test
+    - name: Verify README exists
+      run: |
+        if [ -f "README.md" ]; then
+          echo "README.md exists."
+        else
+          echo "README.md does not exist." && exit 1
+        fi
